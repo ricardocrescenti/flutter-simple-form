@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
-abstract class DefaultFormField extends StatefulWidget {
+abstract class SimpleFormField extends StatefulWidget {
   final String fieldName;
   final String title;
   final bool enabled;
-  final List<StandardValidator> validators;
+  final List<SimpleValidator> validators;
+  final List<SimpleFormatter> inputFormatters;
   final Function(dynamic newValue) onChange;
   final bool canSetState;
 
-  DefaultFormField({
+  SimpleFormField({
     Key key,
     @required this.fieldName,
     this.title,
     this.enabled,
     this.validators,
+    this.inputFormatters,
     this.onChange,
     @required this.canSetState
   }) : super(key: key);
@@ -32,9 +34,10 @@ abstract class DefaultFormField extends StatefulWidget {
     return error;
   }
 
-  defaultTextInputDecoration(String title) {
+  defaultTextInputDecoration(String title, {Widget sufix}) {
     return InputDecoration(
       labelText: title,
+      suffix: sufix
     );
   }
 
@@ -44,7 +47,7 @@ abstract class DefaultFormField extends StatefulWidget {
   State<StatefulWidget> createState() => _DefaultFormField();
 }
 
-class _DefaultFormField extends State<DefaultFormField> {
+class _DefaultFormField extends State<SimpleFormField> {
   SimpleForm simpleForm;
   dynamic value;
 

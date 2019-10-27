@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
-class SimpleSwitchField extends DefaultFormField {
+class SimpleSwitchField extends SimpleFormField {
   final MainAxisAlignment mainAxisAlignment;
 
   SimpleSwitchField({
@@ -31,6 +31,7 @@ class SimpleSwitchField extends DefaultFormField {
             ],
           ),
         Switch(
+          key: this.key,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           value: value,
           onChanged: setValue,

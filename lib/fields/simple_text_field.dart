@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_form/simple_form.dart';
 
-class SimpleTextField extends DefaultFormField {
+class SimpleTextField extends SimpleFormField {
   final TextInputType keyboardType;
   final InputDecoration inputDecoration;
-  final List<TextInputFormatter> inputFormatters;
+  final TextCapitalization textCapitalization;
   final int maxLines;
   final bool obscureText;
   
@@ -13,13 +13,14 @@ class SimpleTextField extends DefaultFormField {
     Key key,
     @required String fieldName,
     @required String title,
+    bool enabled = true,
+    List<SimpleValidator> validators,
+    List<SimpleFormatter> inputFormatters,
+    this.textCapitalization = TextCapitalization.sentences,
     this.keyboardType = TextInputType.text,
     this.inputDecoration,
-    this.inputFormatters,
-    List<StandardValidator> validators,
     this.maxLines = 1,
     this.obscureText = false,
-    bool enabled = true,
     Function(dynamic newValue) onChange,
   }) : super(
     key: key, 
@@ -27,14 +28,17 @@ class SimpleTextField extends DefaultFormField {
     title: title,
     enabled: enabled,
     validators: validators,
+    inputFormatters: inputFormatters,
     onChange: onChange,
     canSetState: false);
 
   @override
   Widget build(BuildContext context, SimpleForm simpleForm, value, setValue) {
     return TextFormField(
+      key: this.key,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      textCapitalization: textCapitalization,
       decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
       controller: TextEditingController(text: value),
       inputFormatters: inputFormatters,
@@ -42,7 +46,7 @@ class SimpleTextField extends DefaultFormField {
       maxLines: maxLines,
       onSaved: setValue,
       enabled: enabled,
-      validator: (value) => performValidators(value)
+      validator: (value) => performValidators(value),
     );
   }
 }

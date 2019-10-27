@@ -2,7 +2,7 @@
 import 'package:flutter/services.dart';
 //import 'dart:math';
 
-class StandardFormatter extends TextInputFormatter {
+class SimpleFormatter extends TextInputFormatter {
   static String _formatDigits = '*A0@';
 
   final String format;
@@ -12,7 +12,7 @@ class StandardFormatter extends TextInputFormatter {
 
   TextEditingValue _lastNewValue;
 
-  StandardFormatter(this.format) {
+  SimpleFormatter(this.format) {
     /// get display format to show in input text
     _displayFormat = displayFormat(format, emptySpace: '_');
 
@@ -152,15 +152,5 @@ class StandardFormatter extends TextInputFormatter {
       }
     }
     return value;
-  }
-
-  static StandardFormatter phoneNumber() {
-    return StandardFormatter('+00 (00) 00000-0000');
-  }
-  static StandardFormatter document() {
-    return StandardFormatter('00-000-000/0000-00');
-  }
-  static StandardFormatter zipCode() {
-    return StandardFormatter('00000-000');
   }
 }

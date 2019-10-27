@@ -1,4 +1,4 @@
-abstract class StandardValidator {
+abstract class SimpleValidator {
 
   String isValid(dynamic value);
 

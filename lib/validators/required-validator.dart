@@ -1,13 +1,13 @@
-import '../patterns/standard-validator.dart';
+import 'package:simple_form/simple_form.dart';
 
-class RequiredValidator extends StandardValidator {
+class RequiredValidator extends SimpleValidator {
   String emptyError = 'Campo obrigatório';
 
   RequiredValidator();
 
   @override
   String isValid(dynamic value) {
-    if (!StandardValidator.hasValue(value)) {
+    if (!SimpleValidator.hasValue(value)) {
       return emptyError;
     }
     return null;

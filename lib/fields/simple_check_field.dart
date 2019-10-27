@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
-class SimpleCheckField extends DefaultFormField {
+class SimpleCheckField extends SimpleFormField {
   SimpleCheckField({
     Key key,
     @required String fieldName,
     @required String title,
-    List<StandardValidator> validators,
     bool enabled = true,
+    List<SimpleValidator> validators,
     Function(dynamic newValue) onChange,
   }) : super(
     key: key, 
@@ -23,6 +23,7 @@ class SimpleCheckField extends DefaultFormField {
     return Row(
       children: <Widget>[
         Checkbox(
+          key: this.key,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           value: value,
           onChanged: setValue,

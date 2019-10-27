@@ -1,9 +1,9 @@
-import '../patterns/standard-validator.dart';
+import 'package:simple_form/simple_form.dart';
 
-class PhoneNumberValidator extends StandardValidator {
+class PhoneNumberValidator extends SimpleValidator {
   @override
   String isValid(value) {
-    if (StandardValidator.hasValue(StandardValidator.retriveOnlyNumber(value)) && !validade(value)) {
+    if (SimpleValidator.hasValue(SimpleValidator.retriveOnlyNumber(value)) && !validade(value)) {
       return 'Telefone inválido';
     }
     return null;
