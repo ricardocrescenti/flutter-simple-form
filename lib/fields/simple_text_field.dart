@@ -33,18 +33,18 @@ class SimpleTextField extends SimpleFormField {
     canSetState: false);
 
   @override
-  Widget build(BuildContext context, SimpleForm simpleForm, value, setValue) {
+  Widget build(BuildContext context, SimpleFormFieldState field) {
     return TextFormField(
       key: this.key,
       obscureText: obscureText,
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
       decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
-      controller: TextEditingController(text: value),
+      controller: TextEditingController(text: field.value),
       inputFormatters: inputFormatters,
       textInputAction: (maxLines == 1 ? TextInputAction.next : TextInputAction.newline),
       maxLines: maxLines,
-      onSaved: setValue,
+      onSaved: field.setValue,
       enabled: enabled,
       validator: (value) => performValidators(value),
     );

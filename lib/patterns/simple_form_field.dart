@@ -41,35 +41,38 @@ abstract class SimpleFormField extends StatefulWidget {
     );
   }
 
-  Widget build(BuildContext context, SimpleForm simpleForm, dynamic value, Function(dynamic newValue) setValue);
+  Widget build(BuildContext context, SimpleFormFieldState simpleForm);
 
   @override
-  State<StatefulWidget> createState() => _DefaultFormField();
+  State<StatefulWidget> createState() => SimpleFormFieldState();
 }
 
-class _DefaultFormField extends State<SimpleFormField> {
-  SimpleForm simpleForm;
-  dynamic value;
+class SimpleFormFieldState extends State<SimpleFormField> {
+  SimpleForm _simpleForm;
+  SimpleForm get simpleForm => _simpleForm;
+
+  dynamic _value;
+  dynamic get value => _value;
 
   @override
   void didChangeDependencies() {
     if (simpleForm == null) {
-      simpleForm = (context.inheritFromWidgetOfExactType(SimpleForm) as SimpleForm);
-      value = simpleForm.getInitialValue(widget.fieldName);
+      _simpleForm = (context.inheritFromWidgetOfExactType(SimpleForm) as SimpleForm);
+      _value = simpleForm.getInitialValue(widget.fieldName);
     }
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.build(context, simpleForm, value, setValue);
+    return widget.build(context, this);
   }
 
-  setValue(dynamic newValue) {
+  setValue(dynamic newValue, {bool canSetState}) {
     if (newValue != value) {
-      value = newValue;
+      _value = newValue;
 
-      if (widget.canSetState) {
+      if ((canSetState == null && widget.canSetState) || (canSetState != null && canSetState)) {
         setState(() {});
       }
 

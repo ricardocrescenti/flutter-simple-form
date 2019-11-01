@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_form/simple_form.dart';
+import 'package:intl/intl.dart';
 
 class SimpleDateField extends SimpleFormField {
   final DateTime firstDate;
   final DateTime lastDate;
   final DateTime initialDate;
+  final String format;
   final InputDecoration inputDecoration;
 
   SimpleDateField({
@@ -17,6 +20,7 @@ class SimpleDateField extends SimpleFormField {
     this.firstDate,
     this.lastDate,
     this.initialDate,
+    this.format,
     this.inputDecoration,
     Function(dynamic newValue) onChange,
   }) : super(
@@ -27,31 +31,49 @@ class SimpleDateField extends SimpleFormField {
     validators: validators,
     inputFormatters: inputFormatters,
     onChange: onChange,
-    canSetState: true);
+    canSetState: false);
     
   @override
-  Widget build(BuildContext context, SimpleForm simpleForm, value, setValue) {
+  Widget build(BuildContext context, SimpleFormFieldState field) {
     return TextFormField(
       key: this.key,
       keyboardType: TextInputType.datetime,
-      decoration: (inputDecoration ?? defaultTextInputDecoration(title, sufix: buildSelectDateButton(context, setValue))),
-      controller: TextEditingController(text: value.toString()),
-      inputFormatters: inputFormatters,
+      decoration: (inputDecoration ?? defaultTextInputDecoration(title, sufix: _buildShowPickerButton(context, field))),
+      controller: TextEditingController(text: _getDisplayValue(field.value)),
+      inputFormatters: _inputFormatters(),
       textInputAction: TextInputAction.next,
-      onSaved: setValue,
+      onSaved: field.setValue,
       enabled: enabled,
       validator: (value) => performValidators(value),
     );
   }
 
-  buildSelectDateButton(BuildContext context, Function(dynamic newValue) setValue) {
-    return IconButton(
-      icon: Icon(Icons.date_range),
-      onPressed: () => openSelectDateDialog(context, setValue),
+  _getDisplayValue(dynamic value) {
+    try {
+      return (value != null ? DateFormat(format).format(value) : '');
+    } catch(error) {
+      return value.toString();
+    }    
+  }
+
+  _inputFormatters() {
+    List<TextInputFormatter> inputFormatters = [
+      SimpleFormatter(this.format.replaceAll('d', '0').replaceAll('M', '0').replaceAll('y', '0'))
+    ];
+    if (this.inputFormatters != null) {
+      inputFormatters.addAll(this.inputFormatters);
+    }
+    return inputFormatters;
+  }
+
+  _buildShowPickerButton(BuildContext context, SimpleFormFieldState field) {
+    return InkWell(
+      onTap: () => _showDatePicker(context, field),
+      child: Icon(Icons.date_range, size: 15,),
     );
   }
 
-  openSelectDateDialog(BuildContext context, Function(dynamic newValue) setValue) {
+  _showDatePicker(BuildContext context, SimpleFormFieldState field) {
     DateTime currentDate = DateTime.now();
 
     showDatePicker(
@@ -61,7 +83,7 @@ class SimpleDateField extends SimpleFormField {
       initialDate: (initialDate ?? currentDate),
     ).then((newDate) {
       if (newDate != null) {
-        setValue(newDate);
+        field.setValue(newDate, canSetState: true);
       }
     });
   }

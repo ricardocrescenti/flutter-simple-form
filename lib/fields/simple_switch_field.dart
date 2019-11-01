@@ -20,7 +20,7 @@ class SimpleSwitchField extends SimpleFormField {
     canSetState: true);
 
   @override
-  Widget build(BuildContext context, SimpleForm simpleForm, value, setValue) {
+  Widget build(BuildContext context, SimpleFormFieldState field) {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: <Widget>[
@@ -33,8 +33,8 @@ class SimpleSwitchField extends SimpleFormField {
         Switch(
           key: this.key,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          value: value,
-          onChanged: setValue,
+          value: field.value,
+          onChanged: field.setValue,
         ),
       ],
     );

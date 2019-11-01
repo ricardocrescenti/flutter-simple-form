@@ -24,14 +24,20 @@ class SimpleComboBoxField<T> extends SimpleFormField {
     canSetState: true);
   
   @override
-  Widget build(BuildContext context, SimpleForm simpleForm, value, setValue) {
-    return DropdownButton<T>(
-      key: this.key,
-      items: builItems(),
-      value: value,
-      onChanged: setValue,
-      hint: (hint != null ? Text(hint) : null),
-      isExpanded: true,
+  Widget build(BuildContext context, SimpleFormFieldState field) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(title),
+        DropdownButton<T>(
+          key: this.key,
+          items: builItems(),
+          value: field.value,
+          onChanged: field.setValue,
+          hint: (hint != null ? Text(hint) : null),
+          isExpanded: true,
+        )
+      ]
     );
   }
 
