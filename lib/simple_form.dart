@@ -12,6 +12,7 @@ export 'patterns/simple_form_field.dart';
 export 'patterns/simple_formatter.dart';
 export 'patterns/simple_validator.dart';
 export 'validators/complete-name-validator.dart';
+export 'validators/condition_validator.dart';
 export 'validators/email-validator.dart';
 export 'validators/phone-number-validator.dart';
 export 'validators/required-validator.dart';

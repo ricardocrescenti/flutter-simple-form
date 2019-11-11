@@ -8,6 +8,34 @@ class SimpleTextField extends SimpleFormField {
   final TextCapitalization textCapitalization;
   final int maxLines;
   final bool obscureText;
+  final TextAlign textAlign;
+  final FocusNode focusNode;
+  final InputDecoration decoration;
+  final TextInputAction textInputAction;
+  final TextStyle style;
+  final StrutStyle strutStyle;
+  final TextDirection textDirection;
+  final bool autofocus;
+  final bool readOnly;
+  final ToolbarOptions toolbarOptions;
+  final bool showCursor;
+  final bool autocorrect;
+  final bool autovalidate;
+  final bool maxLengthEnforced;
+  final int minLines;
+  final bool expands;
+  final int maxLength;
+  final GestureTapCallback onTap;
+  final VoidCallback onEditingComplete;
+  final ValueChanged<String> onFieldSubmitted;
+  final FormFieldSetter<String> onSaved;
+  final double cursorWidth;
+  final Radius cursorRadius;
+  final Color cursorColor;
+  final Brightness keyboardAppearance;
+  final EdgeInsets scrollPadding;
+  final bool enableInteractiveSelection;
+  final InputCounterWidgetBuilder buildCounter;
   
   SimpleTextField({
     Key key,
@@ -21,7 +49,35 @@ class SimpleTextField extends SimpleFormField {
     this.inputDecoration,
     this.maxLines = 1,
     this.obscureText = false,
-    Function(dynamic newValue) onChange,
+    this.textAlign = TextAlign.start,
+    ValueChanged<String> onChanged,
+    this.focusNode,
+    this.decoration = const InputDecoration(),
+    this.textInputAction,
+    this.style,
+    this.strutStyle,
+    this.textDirection,
+    this.autofocus = false,
+    this.readOnly = false,
+    this.toolbarOptions,
+    this.showCursor,
+    this.autocorrect = true,
+    this.autovalidate = false,
+    this.maxLengthEnforced = true,
+    this.minLines,
+    this.expands = false,
+    this.maxLength,
+    this.onTap,
+    this.onEditingComplete,
+    this.onFieldSubmitted,
+    this.onSaved,
+    this.cursorWidth = 2.0,
+    this.cursorRadius,
+    this.cursorColor,
+    this.keyboardAppearance,
+    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.enableInteractiveSelection = true,
+    this.buildCounter,
   }) : super(
     key: key, 
     fieldName: fieldName, 
@@ -29,24 +85,50 @@ class SimpleTextField extends SimpleFormField {
     enabled: enabled,
     validators: validators,
     inputFormatters: inputFormatters,
-    onChange: onChange,
+    onChange: onChanged,
     canSetState: false);
+
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context, SimpleFormFieldState field) {
     return TextFormField(
       key: this.key,
-      obscureText: obscureText,
+      controller: TextEditingController(text: field.value),
+      focusNode: _focusNode,
+      decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
-      decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
-      controller: TextEditingController(text: field.value),
-      inputFormatters: inputFormatters,
       textInputAction: (maxLines == 1 ? TextInputAction.next : TextInputAction.newline),
-      maxLines: maxLines,
+      style: this.style,
+      strutStyle: this.strutStyle,
+      textDirection: this.textDirection,
+      textAlign: textAlign,
+      autofocus: this.autofocus,
+      readOnly: this.readOnly,
+      toolbarOptions: this.toolbarOptions,
+      showCursor: this.showCursor,
+      obscureText: obscureText,
+      autocorrect: this.autocorrect,
+      autovalidate: this.autovalidate,
+      maxLengthEnforced: this.maxLengthEnforced,
+      maxLines: this.maxLines,
+      minLines: this.minLines,
+      expands: this.expands,
+      maxLength: this.maxLength,
+      //onChanged: ,
+      onTap: this.onTap,
+      //onEditingComplete: ,
+      onFieldSubmitted: (value) => FocusScope.of(context).nextFocus(),
       onSaved: field.setValue,
-      enabled: enabled,
       validator: (value) => performValidators(value),
+      inputFormatters: inputFormatters,
+      enabled: enabled,
+      cursorWidth: this.cursorWidth,
+      cursorRadius: this.cursorRadius,
+      cursorColor: this.cursorColor,
+      keyboardAppearance: this.keyboardAppearance,
+      scrollPadding: this.scrollPadding,
     );
   }
 }

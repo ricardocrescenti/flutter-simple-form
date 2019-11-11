@@ -1,6 +1,6 @@
 name: simple_form
 description: Package to simplifique creation of the forms
-version: 0.1.0
+version: 1.0.0
 author: Ricardo Crescenti <ricardo.crescenti@gmail.com>
 homepage: https://github.com/ricardocrescenti/flutter-simple-form
 

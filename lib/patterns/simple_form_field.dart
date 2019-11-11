@@ -7,7 +7,7 @@ abstract class SimpleFormField extends StatefulWidget {
   final bool enabled;
   final List<SimpleValidator> validators;
   final List<SimpleFormatter> inputFormatters;
-  final Function(dynamic newValue) onChange;
+  final ValueChanged<dynamic> onChange;
   final bool canSetState;
 
   SimpleFormField({
@@ -26,12 +26,12 @@ abstract class SimpleFormField extends StatefulWidget {
     if (validators != null) {
       for(int i = 0; i < validators.length; i++) {
         error = validators[i].isValid(value);
-        if (error != null) {
+        if (error != null && error.isNotEmpty) {
           break;
         }
       }
     }
-    return error;
+    return (error == null || error.isEmpty ? null : error);
   }
 
   defaultTextInputDecoration(String title, {Widget sufix}) {
