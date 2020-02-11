@@ -2,9 +2,9 @@ import 'package:simple_form/simple_form.dart';
 
 class PhoneNumberValidator extends SimpleValidator {
   @override
-  String isValid(value) {
+  String isValid(context, value) {
     if (SimpleValidator.hasValue(SimpleValidator.retriveOnlyNumber(value)) && !validade(value)) {
-      return 'Telefone inválido';
+      return SimpleFormLocalization.of(context)[ValidatorsMessages.invalidPhone];
     }
     return null;
   }

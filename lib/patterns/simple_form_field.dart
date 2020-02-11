@@ -21,11 +21,11 @@ abstract class SimpleFormField extends StatefulWidget {
     @required this.canSetState
   }) : super(key: key);
 
-  performValidators(dynamic value) {
+  performValidators(BuildContext context, dynamic value) {
     String error;
     if (validators != null) {
       for(int i = 0; i < validators.length; i++) {
-        error = validators[i].isValid(value);
+        error = validators[i].isValid(context, value);
         if (error != null && error.isNotEmpty) {
           break;
         }
@@ -39,6 +39,10 @@ abstract class SimpleFormField extends StatefulWidget {
       labelText: title,
       suffix: sufix
     );
+  }
+
+  parseEditValue(dynamic newValue) {
+    return newValue;
   }
 
   Widget build(BuildContext context, SimpleFormFieldState simpleForm);
@@ -57,7 +61,7 @@ class SimpleFormFieldState extends State<SimpleFormField> {
   @override
   void didChangeDependencies() {
     if (simpleForm == null) {
-      _simpleForm = (context.inheritFromWidgetOfExactType(SimpleForm) as SimpleForm);
+      _simpleForm = context.dependOnInheritedWidgetOfExactType<SimpleForm>();
       _value = simpleForm.getInitialValue(widget.fieldName);
     }
     super.didChangeDependencies();
@@ -69,14 +73,16 @@ class SimpleFormFieldState extends State<SimpleFormField> {
   }
 
   setValue(dynamic newValue, {bool canSetState}) {
-    if (newValue != value) {
-      _value = newValue;
+    dynamic parsedEditValue = widget.parseEditValue(newValue);
+    
+    if (parsedEditValue != value) {
+      _value = parsedEditValue;
 
       if ((canSetState == null && widget.canSetState) || (canSetState != null && canSetState)) {
         setState(() {});
       }
 
-      performOnChange(newValue);
+      performOnChange(parsedEditValue);
     }
   }
 

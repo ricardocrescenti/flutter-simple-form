@@ -1,14 +1,10 @@
 import 'package:simple_form/simple_form.dart';
 
 class RequiredValidator extends SimpleValidator {
-  String emptyError = 'Campo obrigatório';
-
-  RequiredValidator();
-
   @override
-  String isValid(dynamic value) {
+  String isValid(context, value) {
     if (!SimpleValidator.hasValue(value)) {
-      return emptyError;
+      return SimpleFormLocalization.of(context)[ValidatorsMessages.requiredValidator];
     }
     return null;
   }

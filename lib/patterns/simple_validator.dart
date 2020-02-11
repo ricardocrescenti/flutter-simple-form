@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 abstract class SimpleValidator {
 
-  String isValid(dynamic value);
+  String isValid(BuildContext context, dynamic value);
 
   bool validade(String value) {
     return true;

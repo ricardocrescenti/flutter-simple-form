@@ -44,8 +44,36 @@ class SimpleDateField extends SimpleFormField {
       textInputAction: TextInputAction.next,
       onSaved: field.setValue,
       enabled: enabled,
-      validator: (value) => performValidators(value),
+      validator: (value) => performValidators(context, value),
     );
+  }
+
+  @override
+  performValidators(BuildContext context, dynamic value) {
+    try {
+      List<String> parts = _getPartsOfDateValue(value);      
+      if (parts[0].length > 0 || parts[1].length > 0 || parts[2].length > 0) {
+        DateTime.parse('${parts[0]}-${parts[1]}-${parts[2]}T${parts[3]}:${parts[4]}:${parts[5]}');
+      }
+    } catch(e) {
+      return SimpleFormLocalization.of(context)[ValidatorsMessages.invalidDate];
+    }
+
+    return super.performValidators(context, value);
+  }
+
+  @override
+  parseEditValue(dynamic newValue) {
+    if (newValue is DateTime) {
+      return newValue;
+    }
+
+    try {
+      List<String> parts = _getPartsOfDateValue(newValue);
+      return DateTime.parse('${parts[0]}-${parts[1]}-${parts[2]}T${parts[3]}:${parts[4]}:${parts[5]}');
+    } catch(e) {
+      return null;
+    }
   }
 
   _getDisplayValue(dynamic value) {
@@ -53,7 +81,7 @@ class SimpleDateField extends SimpleFormField {
       return (value != null ? DateFormat(format).format(value) : '');
     } catch(error) {
       return value.toString();
-    }    
+    }
   }
 
   _inputFormatters() {
@@ -86,5 +114,20 @@ class SimpleDateField extends SimpleFormField {
         field.setValue(newDate, canSetState: true);
       }
     });
+  }
+
+  List<String> _getPartsOfDateValue(String value) {
+    List<String> parts = ["","","","00","00","00"];
+    for (int i = 0; i < format.length; i++) {
+      String part = value[i].replaceAll('_', '');
+      if (format[i] == 'y') {
+        parts[0] += part;
+      } else if (format[i] == 'M') {
+        parts[1] += part;
+      } else if (format[i] == 'd') {
+        parts[2] += part;
+      }
+    }
+    return parts;
   }
 }

@@ -6,7 +6,7 @@ class ConditionValidator extends SimpleValidator {
   ConditionValidator(this.validation); 
 
   @override
-  String isValid(value) {
+  String isValid(context, value) {
     return validation(value);
   }
 }

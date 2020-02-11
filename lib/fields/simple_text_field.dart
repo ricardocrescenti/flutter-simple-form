@@ -121,7 +121,7 @@ class SimpleTextField extends SimpleFormField {
       //onEditingComplete: ,
       onFieldSubmitted: (value) => FocusScope.of(context).nextFocus(),
       onSaved: field.setValue,
-      validator: (value) => performValidators(value),
+      validator: (value) => performValidators(context, value),
       inputFormatters: inputFormatters,
       enabled: enabled,
       cursorWidth: this.cursorWidth,

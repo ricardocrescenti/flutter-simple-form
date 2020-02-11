@@ -10,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  datetime_picker_formfield: ^0.4.3
+
+  simple_localization: ^1.0.0
+  intl: 0.16.0
 
 dev_dependencies:
   flutter_test:
