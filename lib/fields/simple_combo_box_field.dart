@@ -3,15 +3,15 @@ import 'package:simple_form/simple_form.dart';
 
 class SimpleComboBoxField<T> extends SimpleFormField {
   final String hint;
-  final List<dynamic> items;
-  final Widget Function(T item) buildMenuItem;
+  final Map<T, dynamic> items;
+  final Widget Function(T key, dynamic value) buildMenuItem;
 
   SimpleComboBoxField({
     Key key,
     @required String fieldName,
     @required String title,
     this.hint,
-    this.items,
+    @required this.items,
     this.buildMenuItem,
     bool enabled = true,
     Function(dynamic newValue) onChange,
@@ -25,30 +25,52 @@ class SimpleComboBoxField<T> extends SimpleFormField {
   
   @override
   Widget build(BuildContext context, SimpleFormFieldState field) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title),
-        DropdownButton<T>(
-          key: this.key,
-          items: builItems(),
-          value: field.value,
-          onChanged: field.setValue,
-          hint: (hint != null ? Text(hint) : null),
-          isExpanded: true,
-        )
-      ]
+    List<DropdownMenuItem<T>> items = builItems();
+
+    return Container(
+      padding: EdgeInsets.only(top: 10, bottom: 7),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(title, style: Theme.of(context).textTheme.caption.copyWith(fontWeight: FontWeight.normal)),
+          DropdownButton<T>(
+            key: this.key,
+            items: items,
+            value: field.value,
+            onChanged: field.setValue,
+            hint: (hint != null ? Text(hint) : null),
+            isExpanded: true,
+            isDense: true,
+            underline: Container(),
+          )
+        ]
+      ),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFFBDBDBD),
+            width: 0.5,
+          ),
+        ),
+      )
     );
   }
 
   List<DropdownMenuItem<T>> builItems() {
-    return this.items.map((item) => DropdownMenuItem<T>(
-      value: item,
-      child: (buildMenuItem != null ? buildMenuItem(item) : _buildMenuItem(item)),
+    return this.items.keys.map((key) => DropdownMenuItem<T>(
+      value: key,
+      child: (this.items[key] != null ? (buildMenuItem != null ? buildMenuItem(key, this.items[key]) : _buildMenuItem(key, this.items[key])) : _NullValue()),
     )).toList();
   }
 
-  Widget _buildMenuItem(T item) {
-    return Text(item.toString() ?? "");
+  Widget _buildMenuItem(T key, dynamic value) {
+    return (value is Widget ? value : Text(value.toString()));
+  }
+}
+
+class _NullValue extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

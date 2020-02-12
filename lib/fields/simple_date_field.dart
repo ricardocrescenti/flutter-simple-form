@@ -20,7 +20,7 @@ class SimpleDateField extends SimpleFormField {
     this.firstDate,
     this.lastDate,
     this.initialDate,
-    this.format,
+    @required this.format,
     this.inputDecoration,
     Function(dynamic newValue) onChange,
   }) : super(
