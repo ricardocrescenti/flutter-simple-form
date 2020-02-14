@@ -118,14 +118,16 @@ class SimpleDateField extends SimpleFormField {
 
   List<String> _getPartsOfDateValue(String value) {
     List<String> parts = ["","","","00","00","00"];
-    for (int i = 0; i < format.length; i++) {
-      String part = value[i].replaceAll('_', '');
-      if (format[i] == 'y') {
-        parts[0] += part;
-      } else if (format[i] == 'M') {
-        parts[1] += part;
-      } else if (format[i] == 'd') {
-        parts[2] += part;
+    if (value != null && value.length > 0) {
+      for (int i = 0; i < format.length; i++) {
+        String part = value[i].replaceAll('_', '');
+        if (format[i] == 'y') {
+          parts[0] += part;
+        } else if (format[i] == 'M') {
+          parts[1] += part;
+        } else if (format[i] == 'd') {
+          parts[2] += part;
+        }
       }
     }
     return parts;
