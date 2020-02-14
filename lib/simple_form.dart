@@ -7,7 +7,7 @@ export 'fields/simple_slider_field.dart';
 export 'fields/simple_switch_field.dart';
 export 'fields/simple_text_field.dart';
 
-export 'form/layout_form.dart';
+export 'form/form_layout.dart';
 export 'form/simple_form.dart';
 
 export 'localizations/localizations_enums.dart';
