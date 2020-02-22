@@ -26,9 +26,8 @@ class SimpleTextField extends SimpleFormField {
   final bool expands;
   final int maxLength;
   final GestureTapCallback onTap;
-  final VoidCallback onEditingComplete;
-  final ValueChanged<String> onFieldSubmitted;
-  final FormFieldSetter<String> onSaved;
+  final Function(String value) onFieldSubmitted;
+  final Function(String value) onSaved;
   final double cursorWidth;
   final Radius cursorRadius;
   final Color cursorColor;
@@ -50,7 +49,7 @@ class SimpleTextField extends SimpleFormField {
     this.maxLines = 1,
     this.obscureText = false,
     this.textAlign = TextAlign.start,
-    ValueChanged<String> onChanged,
+    //Function(dynamic value) onChanged,
     this.focusNode,
     this.decoration = const InputDecoration(),
     this.textInputAction,
@@ -68,7 +67,7 @@ class SimpleTextField extends SimpleFormField {
     this.expands = false,
     this.maxLength,
     this.onTap,
-    this.onEditingComplete,
+    //this.onEditingComplete,
     this.onFieldSubmitted,
     this.onSaved,
     this.cursorWidth = 2.0,
@@ -85,7 +84,6 @@ class SimpleTextField extends SimpleFormField {
     enabled: enabled,
     validators: validators,
     inputFormatters: inputFormatters,
-    onChange: onChanged,
     canSetState: false);
 
   final FocusNode _focusNode = FocusNode();
@@ -94,7 +92,7 @@ class SimpleTextField extends SimpleFormField {
   Widget build(BuildContext context, SimpleFormFieldState field) {
     return TextFormField(
       key: this.key,
-      controller: TextEditingController(text: field.value),
+      controller: TextEditingController(text: (field.value != null ? field.value.toString() : null)),
       focusNode: _focusNode,
       decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
       keyboardType: keyboardType,
@@ -119,8 +117,18 @@ class SimpleTextField extends SimpleFormField {
       //onChanged: ,
       onTap: this.onTap,
       //onEditingComplete: ,
-      onFieldSubmitted: (value) => FocusScope.of(context).nextFocus(),
-      onSaved: field.setValue,
+      onFieldSubmitted: (value) {
+        if (this.onFieldSubmitted != null) {
+          this.onFieldSubmitted(value);
+        }
+        FocusScope.of(context).nextFocus();
+      },
+      onSaved: (value) {
+        if (this.onSaved != null) {
+          this.onSaved(value);
+        }
+        field.setValue(value);
+      },
       validator: (value) => performValidators(context, value),
       inputFormatters: inputFormatters,
       enabled: enabled,
