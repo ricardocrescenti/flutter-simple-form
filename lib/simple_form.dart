@@ -20,5 +20,6 @@ export 'patterns/simple_validator.dart';
 export 'validators/complete-name-validator.dart';
 export 'validators/condition_validator.dart';
 export 'validators/email-validator.dart';
+export 'validators/minimum-size-validator.dart';
 export 'validators/phone-number-validator.dart';
 export 'validators/required-validator.dart';

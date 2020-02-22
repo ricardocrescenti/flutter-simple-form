@@ -30,6 +30,7 @@ class SimpleFormLocalization extends SimpleLocalizations {
       ValidatorsMessages.invalidEmail: 'Invalid email address',
       ValidatorsMessages.invalidName: 'Invalid name',
       ValidatorsMessages.invalidPhone: 'Invalid phone',
+      ValidatorsMessages.minimumSize: 'Enter at least [min_size] characters',
       ValidatorsMessages.requiredValidator: 'Required field',
     },
     'es': {
@@ -38,6 +39,7 @@ class SimpleFormLocalization extends SimpleLocalizations {
       ValidatorsMessages.invalidEmail: 'Dirección de correo electrónico no válida',
       ValidatorsMessages.invalidName: 'Nombre inválido',
       ValidatorsMessages.invalidPhone: 'Teléfono inválido',
+      ValidatorsMessages.minimumSize: 'Ingrese al menos [min_size] caracteres',
       ValidatorsMessages.requiredValidator: 'Campo obligatorio',
     },
     'pt': {
@@ -46,6 +48,7 @@ class SimpleFormLocalization extends SimpleLocalizations {
       ValidatorsMessages.invalidEmail: 'Endereço de e-mail inválido',
       ValidatorsMessages.invalidName: 'Nome inválido',
       ValidatorsMessages.invalidPhone: 'Telefone inválido',
+      ValidatorsMessages.minimumSize: 'Informe pelo menos [min_size] caracteres',
       ValidatorsMessages.requiredValidator: 'Campo obrigatório',
     }
   };

@@ -1,1 +1,1 @@
-enum ValidatorsMessages { invalidDate, invalidEmail, invalidName, invalidPhone, requiredValidator }
+enum ValidatorsMessages { invalidDate, invalidEmail, invalidName, invalidPhone, minimumSize, requiredValidator }
