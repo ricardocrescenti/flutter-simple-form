@@ -73,6 +73,10 @@ class SimpleFormFieldState extends State<SimpleFormField> {
   }
 
   setValue(dynamic newValue, {bool canSetState}) {
+    if (simpleForm.trimValues && newValue != null && newValue is String) {
+      newValue = newValue.toString().trim();
+    }
+
     dynamic parsedEditValue = widget.parseEditValue(newValue);
     
     if (parsedEditValue != value) {

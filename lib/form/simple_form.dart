@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class SimpleForm extends InheritedWidget {
   final bool autovalidate;
+  final bool trimValues;
   final Map<String, dynamic> initialValues;
   final Function(String fieldName, dynamic newValue) onChange;
 
   SimpleForm({
     @required GlobalKey<FormState> key,
     this.autovalidate = false,
+    this.trimValues = true,
     this.initialValues,
     this.onChange,
     @required Widget child
