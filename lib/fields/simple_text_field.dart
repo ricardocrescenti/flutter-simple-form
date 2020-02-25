@@ -27,7 +27,6 @@ class SimpleTextField extends SimpleFormField {
   final int maxLength;
   final GestureTapCallback onTap;
   final Function(String value) onFieldSubmitted;
-  final Function(String value) onSaved;
   final double cursorWidth;
   final Radius cursorRadius;
   final Color cursorColor;
@@ -49,7 +48,7 @@ class SimpleTextField extends SimpleFormField {
     this.maxLines = 1,
     this.obscureText = false,
     this.textAlign = TextAlign.start,
-    //Function(dynamic value) onChanged,
+    Function(dynamic value) onChange,
     this.focusNode,
     this.decoration = const InputDecoration(),
     this.textInputAction,
@@ -67,9 +66,7 @@ class SimpleTextField extends SimpleFormField {
     this.expands = false,
     this.maxLength,
     this.onTap,
-    //this.onEditingComplete,
     this.onFieldSubmitted,
-    this.onSaved,
     this.cursorWidth = 2.0,
     this.cursorRadius,
     this.cursorColor,
@@ -84,6 +81,7 @@ class SimpleTextField extends SimpleFormField {
     enabled: enabled,
     validators: validators,
     inputFormatters: inputFormatters,
+    onChange: onChange,
     canSetState: false);
 
   final FocusNode _focusNode = FocusNode();
@@ -114,19 +112,17 @@ class SimpleTextField extends SimpleFormField {
       minLines: this.minLines,
       expands: this.expands,
       maxLength: this.maxLength,
-      //onChanged: ,
       onTap: this.onTap,
-      //onEditingComplete: ,
       onFieldSubmitted: (value) {
         if (this.onFieldSubmitted != null) {
           this.onFieldSubmitted(value);
         }
         FocusScope.of(context).nextFocus();
       },
-      onSaved: (value) {
-        if (this.onSaved != null) {
-          this.onSaved(value);
-        }
+      onChanged: (value) {
+        // if (this.onSaved != null) {
+        //   this.onSaved(value);
+        // }
         field.setValue(value);
       },
       validator: (value) => performValidators(context, value),

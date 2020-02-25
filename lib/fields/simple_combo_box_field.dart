@@ -14,7 +14,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
     @required this.items,
     this.buildMenuItem,
     bool enabled = true,
-    Function(dynamic newValue) onChange,
+    Function(dynamic value) onChange,
   }) : super(
     key: key, 
     fieldName: fieldName, 

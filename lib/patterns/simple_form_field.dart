@@ -19,11 +19,7 @@ abstract class SimpleFormField extends StatefulWidget {
     this.inputFormatters,
     this.onChange,
     @required this.canSetState
-  }) : super(key: key) {
-    if (this.onChange != null) {
-      print(this.fieldName);
-    }
-  }
+  }) : super(key: key);
 
   performValidators(BuildContext context, dynamic value) {
     String error;
