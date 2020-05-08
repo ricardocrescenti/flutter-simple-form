@@ -24,18 +24,17 @@ class SimpleCheckField extends SimpleFormField {
       children: <Widget>[
         Checkbox(
           key: this.key,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           value: field.value,
           onChanged: field.setValue,
         ),
-        Flexible(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title)
             ],
           )
-        )
+        ),
       ],
     );
   }

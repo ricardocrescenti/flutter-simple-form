@@ -4,6 +4,7 @@ import 'package:simple_form/simple_form.dart';
 class SimpleCheckListField<T> extends SimpleFormField {
   final Map<T, Widget> items;
   final EdgeInsets titlePadding;
+  final bool Function(T item, List itemsChecked) isChecked;
   
   SimpleCheckListField({
     Key key,
@@ -13,7 +14,8 @@ class SimpleCheckListField<T> extends SimpleFormField {
     bool enabled = true,
     List<SimpleValidator> validators,
     Function(dynamic newValue) onChange,
-    this.titlePadding = const EdgeInsets.only(bottom: 10)
+    this.titlePadding = const EdgeInsets.only(bottom: 10),
+    this.isChecked
   }) : super(
     key: key, 
     fieldName: fieldName, 
@@ -52,7 +54,7 @@ class SimpleCheckListField<T> extends SimpleFormField {
           Checkbox(
             key: this.key,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            value: (field.value as List).contains(item),
+            value: (isChecked != null ? isChecked(item, field.value as List) : (field.value as List).contains(item)),
             onChanged: (checked) => _changeItem(checked, field, item),
           ),
           Flexible(
