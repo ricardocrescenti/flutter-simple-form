@@ -12,7 +12,7 @@ class SimpleSliderField extends SimpleFormField {
 
   SimpleSliderField({
     Key key,
-    @required String fieldName,
+    @required dynamic fieldName,
     @required String title,
     this.min = 0.0,
     this.max = 1.0,

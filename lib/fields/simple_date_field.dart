@@ -12,7 +12,7 @@ class SimpleDateField extends SimpleFormField {
 
   SimpleDateField({
     Key key,
-    @required String fieldName,
+    @required dynamic fieldName,
     @required String title,
     bool enabled = true,
     List<SimpleValidator> validators,

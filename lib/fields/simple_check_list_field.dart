@@ -8,7 +8,7 @@ class SimpleCheckListField<T> extends SimpleFormField {
   
   SimpleCheckListField({
     Key key,
-    @required String fieldName,
+    @required dynamic fieldName,
     String title,
     @required this.items,
     bool enabled = true,

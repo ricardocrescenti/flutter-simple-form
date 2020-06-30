@@ -4,7 +4,7 @@ class SimpleForm extends InheritedWidget {
   final bool autovalidate;
   final bool trimValues;
   final Map<String, dynamic> initialValues;
-  final Function(String fieldName, dynamic newValue) onChange;
+  final Function(dynamic fieldName, dynamic newValue) onChange;
 
   SimpleForm({
     @required GlobalKey<FormState> key,
@@ -17,18 +17,44 @@ class SimpleForm extends InheritedWidget {
     child: _createForm(key, child)
   );
 
-  getInitialValue(String fieldName) {
+  getInitialValue(dynamic fieldName) {
     if (initialValues == null) {
       throw Exception('Then initialValue parameter of SimpleForm has not been initialized.');  
     }
-    if (!initialValues.containsKey(fieldName)) {
-      throw Exception('The field $fieldName does not exists in SimpleForm');
-    }
 
-    return initialValues[fieldName];
+    List<dynamic> fieldNameList = (fieldName is List ? fieldName : [fieldName]);
+    dynamic valuesContainer = getValueContainer(fieldNameList);
+
+    return valuesContainer[fieldNameList.last];
   }
 
-  performOnChange(String fieldName, dynamic newValue) {
+  getValueContainer(List<dynamic> fieldNameList) {
+    dynamic valuesContainer = initialValues;
+    for (int index = 0; index < fieldNameList.length; index++) {
+
+      if (valuesContainer is Map) {
+
+        if (!valuesContainer.containsKey(fieldNameList[index])) {
+          throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
+        }
+      
+      } else if (valuesContainer is List) {
+
+        if (valuesContainer.length < (index + 1)) {
+          throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
+        }
+
+      }
+
+      if (index == fieldNameList.length - 1) {
+        return valuesContainer;
+      } else {
+        valuesContainer = valuesContainer[fieldNameList[index]];
+      }
+    }
+  }
+
+  performOnChange(dynamic fieldName, dynamic newValue) {
     if (onChange != null) {
       onChange(fieldName, newValue);
     }
