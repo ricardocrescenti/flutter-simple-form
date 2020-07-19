@@ -146,11 +146,9 @@ class SimpleComboBoxField<T> extends SimpleFormField {
 
   showDropDownItems(BuildContext context, SimpleFormFieldState field) {
     showDialog(context: context,
-      child: Builder(
-        builder: (context) => SimpleDialog(
+      builder: (context) => SimpleDialog(
         //title: Text(title),
         children: _builItems(context, field))
-      )
     );
   }
 

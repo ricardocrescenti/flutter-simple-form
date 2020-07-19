@@ -34,7 +34,7 @@ class SimpleSliderField extends SimpleFormField {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(title, style: Theme.of(context).textTheme.body1,),
+        Text(title, style: Theme.of(context).textTheme.bodyText2,),
         Slider(
           key: this.key,
           value: field.value,
