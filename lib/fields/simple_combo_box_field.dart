@@ -20,7 +20,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
   final ToolbarOptions toolbarOptions;
   //final bool showCursor;
   //final bool autocorrect;
-  final bool autovalidate;
+  final AutovalidateMode autovalidateMode;
   //final bool maxLengthEnforced;
   //final int minLines;
   final bool expands;
@@ -37,7 +37,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
   
   SimpleComboBoxField({
     Key key,
-    @required dynamic fieldName,
+    @required String fieldName,
     @required String title,
     @required this.items,
     bool enabled = true,
@@ -60,7 +60,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
     this.toolbarOptions,
     //this.showCursor,
     //this.autocorrect = true,
-    this.autovalidate = false,
+    this.autovalidateMode = AutovalidateMode.disabled,
     //this.maxLengthEnforced = true,
     //this.minLines,
     this.expands = false,
@@ -105,7 +105,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
       //showCursor: this.showCursor,
       //obscureText: obscureText,
       //autocorrect: this.autocorrect,
-      autovalidate: this.autovalidate,
+      autovalidateMode: this.autovalidateMode,
       //maxLengthEnforced: this.maxLengthEnforced,
       //maxLines: this.maxLines,
       //minLines: this.minLines,

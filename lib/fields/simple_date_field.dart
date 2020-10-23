@@ -12,7 +12,7 @@ class SimpleDateField extends SimpleFormField {
 
   SimpleDateField({
     Key key,
-    @required dynamic fieldName,
+    @required String fieldName,
     @required String title,
     bool enabled = true,
     List<SimpleValidator> validators,
@@ -78,7 +78,7 @@ class SimpleDateField extends SimpleFormField {
 
   _getDisplayValue(dynamic value) {
     try {
-      return (value != null ? DateFormat(format).format(value) : '');
+      return (value != null ? DateFormat(format).format(value is DateTime ? value : DateTime.parse(value)) : '');
     } catch(error) {
       return value.toString();
     }

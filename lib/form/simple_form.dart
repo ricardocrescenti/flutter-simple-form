@@ -17,46 +17,55 @@ class SimpleForm extends InheritedWidget {
     child: _createForm(key, child)
   );
 
-  getInitialValue(dynamic fieldName) {
+  getInitialValue(String fieldName) {
     if (initialValues == null) {
       throw Exception('Then initialValue parameter of SimpleForm has not been initialized.');  
     }
 
-    List<dynamic> fieldNameList = (fieldName is List ? fieldName : [fieldName]);
+    List<String> fieldNameList = fieldName.split('.');
     dynamic valuesContainer = getValueContainer(fieldNameList);
 
     return valuesContainer[fieldNameList.last];
   }
 
-  getValueContainer(List<dynamic> fieldNameList) {
+  getValueContainer(List<String> fieldNameList) {
     dynamic valuesContainer = initialValues;
-    for (int index = 0; index < fieldNameList.length; index++) {
+    for (int index = 0; index < fieldNameList.length - 1; index++) {
 
       if (valuesContainer is Map) {
 
         if (!valuesContainer.containsKey(fieldNameList[index])) {
           throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
         }
+        valuesContainer = valuesContainer[fieldNameList[index]];
       
       } else if (valuesContainer is List) {
 
-        if (valuesContainer.length < (index + 1)) {
-          throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
+        int position = int.tryParse(fieldNameList[index]);
+        if (position == null) {
+          throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
+        } else if (valuesContainer.length < (position + 1)) {
+          throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
         }
+        valuesContainer = valuesContainer[position];
 
-      }
-
-      if (index == fieldNameList.length - 1) {
-        return valuesContainer;
       } else {
         valuesContainer = valuesContainer[fieldNameList[index]];
       }
+
+      if (index == fieldNameList.length - 1) {
+        break;
+      }
+      // } else {
+      //   valuesContainer = valuesContainer[fieldNameList[index]];
+      // }
     }
+    return valuesContainer;
   }
 
-  performOnChange(dynamic fieldName, dynamic newValue) {
+  performOnChange(String fieldName, dynamic newValue) {
     if (onChange != null) {
-      onChange(fieldName, newValue);
+      onChange(fieldName.split('.'), newValue);
     }
   }
 

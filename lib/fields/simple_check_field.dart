@@ -4,7 +4,7 @@ import 'package:simple_form/simple_form.dart';
 class SimpleCheckField extends SimpleFormField {
   SimpleCheckField({
     Key key,
-    @required dynamic fieldName,
+    @required String fieldName,
     @required String title,
     bool enabled = true,
     List<SimpleValidator> validators,

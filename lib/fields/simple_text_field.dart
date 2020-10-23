@@ -20,7 +20,7 @@ class SimpleTextField extends SimpleFormField {
   final ToolbarOptions toolbarOptions;
   final bool showCursor;
   final bool autocorrect;
-  final bool autovalidate;
+  final AutovalidateMode autovalidateMode;
   final bool maxLengthEnforced;
   final int minLines;
   final bool expands;
@@ -37,7 +37,7 @@ class SimpleTextField extends SimpleFormField {
   
   SimpleTextField({
     Key key,
-    @required dynamic fieldName,
+    @required String fieldName,
     @required String title,
     bool enabled = true,
     List<SimpleValidator> validators,
@@ -60,7 +60,7 @@ class SimpleTextField extends SimpleFormField {
     this.toolbarOptions,
     this.showCursor,
     this.autocorrect = true,
-    this.autovalidate = false,
+    this.autovalidateMode = AutovalidateMode.disabled,
     this.maxLengthEnforced = true,
     this.minLines,
     this.expands = false,
@@ -106,7 +106,7 @@ class SimpleTextField extends SimpleFormField {
       showCursor: this.showCursor,
       obscureText: obscureText,
       autocorrect: this.autocorrect,
-      autovalidate: this.autovalidate,
+      autovalidateMode: this.autovalidateMode,
       maxLengthEnforced: this.maxLengthEnforced,
       maxLines: this.maxLines,
       minLines: this.minLines,
@@ -117,7 +117,7 @@ class SimpleTextField extends SimpleFormField {
         if (this.onFieldSubmitted != null) {
           this.onFieldSubmitted(value);
         }
-        FocusScope.of(context).nextFocus();
+        //FocusScope.of(context).nextFocus();
       },
       onChanged: (value) {
         // if (this.onSaved != null) {

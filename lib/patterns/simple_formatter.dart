@@ -76,7 +76,7 @@ class SimpleFormatter extends TextInputFormatter {
 
     _lastNewValue = newValue;
     return newValue.copyWith(
-      text: resultText, selection: TextSelection.collapsed(offset: selectionStart));
+      text: resultText, selection: TextSelection(baseOffset: selectionStart));
   }
 
   static String formatText(String value, String format, {bool displayFormatIfEmpty = false, String emptySpace = ' '}) {

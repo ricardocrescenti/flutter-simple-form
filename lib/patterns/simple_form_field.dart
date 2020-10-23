@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
 abstract class SimpleFormField extends StatefulWidget {
-  final dynamic fieldName;
+  final String fieldName;
   final String title;
   final bool enabled;
   final List<SimpleValidator> validators;
