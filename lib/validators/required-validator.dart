@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/cupertino.dart';
 import 'package:simple_form/simple_form.dart';
 
