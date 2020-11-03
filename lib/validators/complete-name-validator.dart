@@ -1,6 +1,8 @@
 import 'package:simple_form/simple_form.dart';
 
 class CompleteNameValidator extends SimpleValidator {
+  const CompleteNameValidator(): super();
+  
   @override
   String isValid(context, value) {
     if (SimpleValidator.hasValue(value)) {

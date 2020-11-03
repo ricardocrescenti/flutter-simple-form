@@ -2,7 +2,8 @@ import 'package:simple_form/simple_form.dart';
 
 class MinimumSizeValidator extends SimpleValidator {
   final int minimumSize;
-  MinimumSizeValidator(this.minimumSize);
+  
+  const MinimumSizeValidator(this.minimumSize): super();
 
   @override
   String isValid(context, value) {
