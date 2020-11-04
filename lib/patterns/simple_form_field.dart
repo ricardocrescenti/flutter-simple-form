@@ -21,7 +21,7 @@ abstract class SimpleFormField extends StatefulWidget {
     @required this.canSetState
   }) : super(key: key);
 
-  performValidators(BuildContext context, dynamic value) {
+  String performValidators(BuildContext context, dynamic value) {
     String error;
     if (validators != null) {
       for(int i = 0; i < validators.length; i++) {
@@ -34,14 +34,14 @@ abstract class SimpleFormField extends StatefulWidget {
     return (error == null || error.isEmpty ? null : error);
   }
 
-  defaultTextInputDecoration(String title, {Widget sufix}) {
+  InputDecoration defaultTextInputDecoration(String title, {Widget sufix}) {
     return InputDecoration(
       labelText: title,
       suffix: sufix
     );
   }
 
-  parseEditValue(dynamic newValue) {
+  dynamic parseEditValue(dynamic newValue) {
     return newValue;
   }
 
@@ -72,7 +72,7 @@ class SimpleFormFieldState extends State<SimpleFormField> {
     return widget.build(context, this);
   }
 
-  setValue(dynamic newValue, {bool canSetState, bool alwaysSet = false}) {
+  void setValue(dynamic newValue, {bool canSetState, bool alwaysSet = false}) {
     if (simpleForm.trimValues && newValue != null && newValue is String) {
       newValue = newValue.toString().trim();
     }
@@ -90,7 +90,7 @@ class SimpleFormFieldState extends State<SimpleFormField> {
     }
   }
 
-  performOnChange(dynamic newValue) {
+  void performOnChange(dynamic newValue) {
     if (widget.onChange != null) {
       widget.onChange(newValue);
     }

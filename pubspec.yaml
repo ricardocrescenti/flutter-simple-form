@@ -11,8 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  simple_localization: ^1.0.0
+  cached_network_image: ^2.0.0-rc.1
+  image_cropper: ^1.1.0
+  image_picker: ^0.6.1+11
   intl: ^0.16.0
+  simple_localization: ^1.0.0
 
 dev_dependencies:
   flutter_test:

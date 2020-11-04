@@ -4,6 +4,7 @@ export 'fields/simple_check_field.dart';
 export 'fields/simple_check_list_field.dart';
 export 'fields/simple_combo_box_field.dart';
 export 'fields/simple_date_field.dart';
+export 'fields/simple_image_field.dart';
 export 'fields/simple_slider_field.dart';
 export 'fields/simple_switch_field.dart';
 export 'fields/simple_text_field.dart';
