@@ -64,8 +64,8 @@ class SimpleImageField extends SimpleFormField {
 									bottom: BorderSide(color: Theme.of(context).dividerColor)
 								)
 							),
-							//height: (size?.height != null && size.height > 0 ? size.height : null),
-							//width: (size?.width != null && size.width > 0 ? size?.width : null),
+							height: size.height,
+							width: size.width,
 							child: _createImageWidget(context, field)
 						),
 						_createOperationsButtons(context, field)
