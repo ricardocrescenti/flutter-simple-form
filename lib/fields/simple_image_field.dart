@@ -10,17 +10,21 @@ class SimpleImageField extends SimpleFormField {
 	final Size size;
 	final Widget emptyWidget;
 	final bool cropImage;
+	final double aspectRatioX;
+	final double aspectRatioY;
 	final Future<String> Function(String value) onGetUrl;
 	final dynamic Function(dynamic value) onGetImage;
 
 	SimpleImageField({
 		Key key,
+		String title,
 		@required String fieldName,
-		@required String title,
 		bool enabled = true,
 		this.size = const Size(150, 150),
 		this.emptyWidget,
 		this.cropImage = true,
+		this.aspectRatioX = 1.0, 
+		this.aspectRatioY = 1.0,
 		List<SimpleValidator> validators,
 		Function(dynamic newValue) onChange,
 		this.onGetUrl,
@@ -47,9 +51,12 @@ class SimpleImageField extends SimpleFormField {
 			crossAxisAlignment: CrossAxisAlignment.start,
 			mainAxisSize: MainAxisSize.min,
 			children: [
-				Padding(
-					padding: EdgeInsets.only(bottom: 5),
-					child: Text(field.widget.title, style: Theme.of(context).textTheme.caption)
+				(field.widget.title != null 
+					? Padding(
+						padding: EdgeInsets.only(bottom: 5),
+						child: Text(field.widget.title, style: Theme.of(context).textTheme.caption)
+					)
+					: null
 				),
 				Row(
 					crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,12 +78,12 @@ class SimpleImageField extends SimpleFormField {
 						_createOperationsButtons(context, field)
 					]
 				)
-			],
+			].where((element) => element != null).toList(),
 		);
 	}
 
 	_createImageWidget(BuildContext context, SimpleFormFieldState field) {
-		if (field.value == null) {
+		if (field.value == null || (field.value is String && field.value.isEmpty)) {
 			return Center(
 				child: emptyWidget
 			);
@@ -189,8 +196,8 @@ class SimpleImageField extends SimpleFormField {
 		return ImageCropper.cropImage(
 			sourcePath: imageFile.path,
 			aspectRatio: CropAspectRatio(
-				ratioX: 1.0,
-				ratioY: 1.0,
+				ratioX: aspectRatioX, 
+				ratioY: aspectRatioY
 			),
 		);
 	}

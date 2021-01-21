@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
 class SimpleCheckField extends SimpleFormField {
+  final VisualDensity visualDensity;
+
   SimpleCheckField({
     Key key,
     @required String fieldName,
@@ -9,10 +11,11 @@ class SimpleCheckField extends SimpleFormField {
     bool enabled = true,
     List<SimpleValidator> validators,
     Function(dynamic newValue) onChange,
+    this.visualDensity = VisualDensity.compact
   }) : super(
     key: key, 
-    fieldName: fieldName, 
     title: title,
+    fieldName: fieldName, 
     enabled: enabled,
     validators: validators,
     onChange: onChange,
@@ -26,6 +29,7 @@ class SimpleCheckField extends SimpleFormField {
           key: this.key,
           value: field.value,
           onChanged: field.setValue,
+          visualDensity: visualDensity,
         ),
         Expanded(
           child: Column(

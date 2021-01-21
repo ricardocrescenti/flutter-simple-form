@@ -6,8 +6,8 @@ class SimpleSwitchField extends SimpleFormField {
 
   SimpleSwitchField({
     Key key,
-    @required String fieldName,
     @required String title,
+    @required String fieldName,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     bool enabled = true,
     Function(dynamic newValue) onChange,

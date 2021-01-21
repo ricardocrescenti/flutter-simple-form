@@ -37,8 +37,8 @@ class SimpleTextField extends SimpleFormField {
   
   SimpleTextField({
     Key key,
-    @required String fieldName,
     @required String title,
+    @required String fieldName,
     bool enabled = true,
     List<SimpleValidator> validators,
     List<SimpleFormatter> inputFormatters,

@@ -37,8 +37,8 @@ class SimpleComboBoxField<T> extends SimpleFormField {
   
   SimpleComboBoxField({
     Key key,
-    @required String fieldName,
     @required String title,
+    @required String fieldName,
     @required this.items,
     bool enabled = true,
     List<SimpleValidator> validators,

@@ -8,8 +8,8 @@ class SimpleCheckListField<T> extends SimpleFormField {
   
   SimpleCheckListField({
     Key key,
-    @required String fieldName,
     String title,
+    @required String fieldName,
     @required this.items,
     bool enabled = true,
     List<SimpleValidator> validators,

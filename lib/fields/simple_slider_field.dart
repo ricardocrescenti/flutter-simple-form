@@ -12,8 +12,8 @@ class SimpleSliderField extends SimpleFormField {
 
   SimpleSliderField({
     Key key,
-    @required String fieldName,
     @required String title,
+    @required String fieldName,
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
