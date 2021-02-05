@@ -10,7 +10,6 @@ class SimpleTextField extends SimpleFormField {
   final bool obscureText;
   final TextAlign textAlign;
   final FocusNode focusNode;
-  final InputDecoration decoration;
   final TextInputAction textInputAction;
   final TextStyle style;
   final StrutStyle strutStyle;
@@ -37,7 +36,7 @@ class SimpleTextField extends SimpleFormField {
   
   SimpleTextField({
     Key key,
-    @required String title,
+    String title,
     @required String fieldName,
     bool enabled = true,
     List<SimpleValidator> validators,
@@ -50,7 +49,6 @@ class SimpleTextField extends SimpleFormField {
     this.textAlign = TextAlign.start,
     Function(dynamic value) onChange,
     this.focusNode,
-    this.decoration = const InputDecoration(),
     this.textInputAction,
     this.style,
     this.strutStyle,
@@ -91,7 +89,7 @@ class SimpleTextField extends SimpleFormField {
     return TextFormField(
       key: this.key,
       controller: TextEditingController(text: (field.value != null ? field.value.toString() : null)),
-      focusNode: _focusNode,
+      focusNode: focusNode ?? _focusNode,
       decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
