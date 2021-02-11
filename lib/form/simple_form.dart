@@ -25,6 +25,19 @@ class SimpleForm extends InheritedWidget {
     List<String> fieldNameList = fieldName.split('.');
     dynamic valuesContainer = getValueContainer(fieldNameList);
 
+    if (valuesContainer is List) {
+
+      int position = int.tryParse(fieldNameList.last);
+      if (position == null) {
+        throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
+      } else if (valuesContainer.length < (position + 1)) {
+        throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
+      }
+      
+      return valuesContainer[position];
+
+    }
+
     return valuesContainer[fieldNameList.last];
   }
 
