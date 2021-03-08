@@ -153,7 +153,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
   }
 
   List<Widget> _builItems(BuildContext context, SimpleFormFieldState field) {
-    return this.items.keys.map((key) => FlatButton(
+    return this.items.keys.map((key) => TextButton(
       onPressed: () {
         field.setValue(key);
         Navigator.pop(context, key);

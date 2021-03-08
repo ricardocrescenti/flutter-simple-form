@@ -20,7 +20,7 @@ class SimpleTextField extends SimpleFormField {
   final bool showCursor;
   final bool autocorrect;
   final AutovalidateMode autovalidateMode;
-  final bool maxLengthEnforced;
+  final MaxLengthEnforcement maxLengthEnforcement;
   final int minLines;
   final bool expands;
   final int maxLength;
@@ -59,7 +59,7 @@ class SimpleTextField extends SimpleFormField {
     this.showCursor,
     this.autocorrect = true,
     this.autovalidateMode = AutovalidateMode.disabled,
-    this.maxLengthEnforced = true,
+    this.maxLengthEnforcement = MaxLengthEnforcement.truncateAfterCompositionEnds,
     this.minLines,
     this.expands = false,
     this.maxLength,
@@ -105,7 +105,7 @@ class SimpleTextField extends SimpleFormField {
       obscureText: obscureText,
       autocorrect: this.autocorrect,
       autovalidateMode: this.autovalidateMode,
-      maxLengthEnforced: this.maxLengthEnforced,
+      maxLengthEnforcement: this.maxLengthEnforcement,
       maxLines: this.maxLines,
       minLines: this.minLines,
       expands: this.expands,
