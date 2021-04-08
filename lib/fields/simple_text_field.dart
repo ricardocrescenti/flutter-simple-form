@@ -3,8 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:simple_form/simple_form.dart';
 
 class SimpleTextField extends SimpleFormField {
+  static EdgeInsets defaultScrollPadding = EdgeInsets.all(20.0);
+  static EdgeInsets defaultOutlinePadding = EdgeInsets.only(bottom: 10);
+
   final TextInputType keyboardType;
   final InputDecoration inputDecoration;
+  final EdgeInsets padding;
   final TextCapitalization textCapitalization;
   final int maxLines;
   final bool obscureText;
@@ -42,9 +46,11 @@ class SimpleTextField extends SimpleFormField {
     List<SimpleValidator> validators,
     List<SimpleFormatter> inputFormatters,
     this.textCapitalization = TextCapitalization.sentences,
-    this.keyboardType = TextInputType.text,
+    this.keyboardType,
     this.inputDecoration,
+    this.padding = EdgeInsets.zero,
     this.maxLines = 1,
+    this.minLines = 1,
     this.obscureText = false,
     this.textAlign = TextAlign.start,
     Function(dynamic value) onChange,
@@ -60,7 +66,6 @@ class SimpleTextField extends SimpleFormField {
     this.autocorrect = true,
     this.autovalidateMode = AutovalidateMode.disabled,
     this.maxLengthEnforcement = MaxLengthEnforcement.truncateAfterCompositionEnds,
-    this.minLines,
     this.expands = false,
     this.maxLength,
     this.onTap,
@@ -69,7 +74,7 @@ class SimpleTextField extends SimpleFormField {
     this.cursorRadius,
     this.cursorColor,
     this.keyboardAppearance,
-    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.scrollPadding,
     this.enableInteractiveSelection = true,
     this.buildCounter,
   }) : super(
@@ -86,12 +91,17 @@ class SimpleTextField extends SimpleFormField {
 
   @override
   Widget build(BuildContext context, SimpleFormFieldState field) {
-    return TextFormField(
+    InputDecoration decoration = (inputDecoration ?? defaultTextInputDecoration(title));
+    EdgeInsets padding = this.padding ?? (decoration.border is OutlineInputBorder ? defaultOutlinePadding : EdgeInsets.zero);
+
+    return Padding(
+      padding: padding,
+      child: TextFormField(
       key: this.key,
       controller: TextEditingController(text: (field.value != null ? field.value.toString() : null)),
       focusNode: focusNode ?? _focusNode,
-      decoration: (inputDecoration ?? defaultTextInputDecoration(title)),
-      keyboardType: keyboardType,
+      decoration: decoration,
+      keyboardType: keyboardType ?? (maxLines > 1 ?  TextInputType.multiline : TextInputType.text),
       textCapitalization: textCapitalization,
       textInputAction: (maxLines == 1 ? TextInputAction.next : TextInputAction.newline),
       style: this.style,
@@ -130,7 +140,7 @@ class SimpleTextField extends SimpleFormField {
       cursorRadius: this.cursorRadius,
       cursorColor: this.cursorColor,
       keyboardAppearance: this.keyboardAppearance,
-      scrollPadding: this.scrollPadding,
-    );
+      scrollPadding: this.scrollPadding ?? defaultScrollPadding,
+    ));
   }
 }
