@@ -144,21 +144,21 @@ class SimpleImageField extends SimpleFormField {
 	_createSelectGalleryImageButton(BuildContext context, SimpleFormFieldState field) {
 		return IconButton(
 			icon: Icon(Icons.photo_album), 
-			onPressed: () => _selectImageFromGallery(field)
+			onPressed: (enabled ? () => _selectImageFromGallery(field) : null)
 		);
 	}
 
 	_createSelectCameraPhotoButton(BuildContext context, SimpleFormFieldState field) {
 		return IconButton(
 			icon: Icon(Icons.photo_camera), 
-			onPressed: () => _selectImageFromCamera(field)
+			onPressed: (enabled ? () => _selectImageFromCamera(field) : null)
 		);
 	}
 
 	_createClearImageButton(BuildContext context, SimpleFormFieldState field) {
 		return IconButton(
 			icon: Icon(Icons.clear), 
-			onPressed: () => _clearImage(field)
+			onPressed: (enabled ? () => _clearImage(field) : null)
 		);
 	}
 
