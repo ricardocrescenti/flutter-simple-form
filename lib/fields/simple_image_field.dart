@@ -171,35 +171,40 @@ class SimpleImageField extends SimpleFormField {
 	}
 
 	_selectImage(ImageSource imageSource, SimpleFormFieldState field) async {
-		PickedFile originalFile = await ImagePicker().getImage(source: imageSource);
-		if (originalFile == null) {
+		File file = await selectImage(imageSource, cropImage: this.cropImage, aspectRatioX: aspectRatioX, aspectRatioY: aspectRatioY);
+		if (file == null) {
 			return;
 		}
-		String filePath = originalFile.path;
 
-		if (this.cropImage) {
-			File croppedImage = await _cropImage(File.fromUri(Uri(path: originalFile.path)));
-			if (croppedImage == null) {
-				return;
-			}
-			filePath = croppedImage.path;
-		}
-		
 		if (onGetImage != null) {
-			await onGetImage(filePath);
+			await onGetImage(file.path);
 		}
 
-		field.setValue(filePath); 
+		field.setValue(file.path); 
 	}
 
-	_cropImage(File imageFile) {
-		return ImageCropper.cropImage(
-			sourcePath: imageFile.path,
-			aspectRatio: CropAspectRatio(
-				ratioX: aspectRatioX, 
-				ratioY: aspectRatioY
-			),
-		);
+	static Future<File> selectImage(ImageSource imageSource, { bool cropImage = true, double aspectRatioX = 1.0, double aspectRatioY = 1.0 }) async {
+		PickedFile originalFile = await ImagePicker().getImage(source: imageSource);
+		if (originalFile == null) {
+			return null;
+		}
+		File file = File.fromUri(Uri(path: originalFile.path));
+
+		if (cropImage) {
+			file = await ImageCropper.cropImage(
+				sourcePath: file.path,
+				aspectRatio: CropAspectRatio(
+					ratioX: aspectRatioX, 
+					ratioY: aspectRatioY
+				),
+			);
+
+			if (file == null) {
+				return null;
+			}
+		}
+
+		return file;
 	}
 
 	_clearImage(SimpleFormFieldState field) {
