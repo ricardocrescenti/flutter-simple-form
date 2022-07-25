@@ -7,26 +7,29 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SimpleImageField extends SimpleFormField {
+
+	static final ImageCropper _imageCropper = ImageCropper();
+
 	final Size size;
-	final Widget emptyWidget;
+	final Widget? emptyWidget;
 	final bool cropImage;
 	final double aspectRatioX;
 	final double aspectRatioY;
-	final Future<String> Function(String value) onGetUrl;
-	final dynamic Function(dynamic value) onGetImage;
+	final Future<String> Function(String value)? onGetUrl;
+	final dynamic Function(dynamic value)? onGetImage;
 
-	SimpleImageField({
-		Key key,
-		String title,
-		@required String fieldName,
+	const SimpleImageField({
+		Key? key,
+		String? title,
+		required String fieldName,
 		bool enabled = true,
 		this.size = const Size(150, 150),
 		this.emptyWidget,
 		this.cropImage = true,
 		this.aspectRatioX = 1.0, 
 		this.aspectRatioY = 1.0,
-		List<SimpleValidator> validators,
-		Function(dynamic newValue) onChange,
+		List<SimpleValidator>? validators,
+		Function(dynamic newValue)? onChange,
 		this.onGetUrl,
 		this.onGetImage
 	}) : super(
@@ -40,21 +43,24 @@ class SimpleImageField extends SimpleFormField {
 
   	@override
   	Widget build(BuildContext context, SimpleFormFieldState field) {
+
 		return Container(
-			margin: EdgeInsets.symmetric(vertical: 10),
+			margin: const EdgeInsets.symmetric(vertical: 10),
 			child: _createBody(context, field),
 		);
+
   	}
 
 	Widget _createBody(BuildContext context, SimpleFormFieldState field) {
+
 		return Column(
 			crossAxisAlignment: CrossAxisAlignment.start,
 			mainAxisSize: MainAxisSize.min,
 			children: [
 				(field.widget.title != null 
 					? Padding(
-						padding: EdgeInsets.only(bottom: 5),
-						child: Text(field.widget.title, style: Theme.of(context).textTheme.caption)
+						padding: const EdgeInsets.only(bottom: 5),
+						child: Text(field.widget.title!, style: Theme.of(context).textTheme.caption)
 					)
 					: null
 				),
@@ -78,11 +84,13 @@ class SimpleImageField extends SimpleFormField {
 						_createOperationsButtons(context, field)
 					]
 				)
-			].where((element) => element != null).toList(),
+			].where((element) => element != null).toList().cast(),
 		);
+
 	}
 
 	_createImageWidget(BuildContext context, SimpleFormFieldState field) {
+
 		if (field.value == null || (field.value is String && field.value.isEmpty)) {
 			return Center(
 				child: emptyWidget
@@ -91,7 +99,7 @@ class SimpleImageField extends SimpleFormField {
 
 		Future<String> url = Future.value(field.value.toString());
 		if (onGetUrl != null) {
-			url = onGetUrl(field.value.toString());
+			url = onGetUrl!(field.value.toString());
 		}
 
 		return FutureBuilder<String>(
@@ -99,38 +107,40 @@ class SimpleImageField extends SimpleFormField {
 			builder: (context, snapshot) {
 
 				if (snapshot.connectionState != ConnectionState.done) {
-					return Center(
+					return const Center(
 						child: CircularProgressIndicator()
 					);
 				}
 
 				if (snapshot.hasError) {
-					return Center(
+					return const Center(
 						child: Icon(Icons.error)
 					);
 				}
 
-				if (!snapshot.hasData == null || snapshot.data.isEmpty) {
+				if (!snapshot.hasData || snapshot.data!.isEmpty) {
 					return Center(
 						child: emptyWidget
 					);
 				}
 
-				if (snapshot.data.startsWith('/')) {
-					return Image.file(File(snapshot.data));
+				if (snapshot.data!.startsWith('/')) {
+					return Image.file(File(snapshot.data!));
 				}
 
 				return CachedNetworkImage(
-					imageUrl: snapshot.data, 
+					imageUrl: snapshot.data!, 
 					width: double.infinity, 
 					height: double.infinity, 
 					fit: BoxFit.cover);
 
 			}
 		);
+
 	}
 
 	_createOperationsButtons(BuildContext context, SimpleFormFieldState field) {
+
 		return Column(
 			mainAxisSize: MainAxisSize.min,
 			children: [
@@ -139,27 +149,34 @@ class SimpleImageField extends SimpleFormField {
 				_createClearImageButton(context, field)
 			]
 		);
+
 	}
 
 	_createSelectGalleryImageButton(BuildContext context, SimpleFormFieldState field) {
+
 		return IconButton(
-			icon: Icon(Icons.photo_album), 
+			icon: const Icon(Icons.photo_album), 
 			onPressed: (enabled ? () => _selectImageFromGallery(field) : null)
 		);
+
 	}
 
 	_createSelectCameraPhotoButton(BuildContext context, SimpleFormFieldState field) {
+
 		return IconButton(
-			icon: Icon(Icons.photo_camera), 
+			icon: const Icon(Icons.photo_camera), 
 			onPressed: (enabled ? () => _selectImageFromCamera(field) : null)
 		);
+
 	}
 
 	_createClearImageButton(BuildContext context, SimpleFormFieldState field) {
+
 		return IconButton(
-			icon: Icon(Icons.clear), 
+			icon: const Icon(Icons.clear), 
 			onPressed: (enabled ? () => _clearImage(field) : null)
 		);
+
 	}
 
 	_selectImageFromGallery(SimpleFormFieldState field) {
@@ -171,27 +188,31 @@ class SimpleImageField extends SimpleFormField {
 	}
 
 	_selectImage(ImageSource imageSource, SimpleFormFieldState field) async {
-		File file = await selectImage(imageSource, cropImage: this.cropImage, aspectRatioX: aspectRatioX, aspectRatioY: aspectRatioY);
+
+		File? file = await selectImage(imageSource, cropImage: cropImage, aspectRatioX: aspectRatioX, aspectRatioY: aspectRatioY);
 		if (file == null) {
 			return;
 		}
 
 		if (onGetImage != null) {
-			await onGetImage(file.path);
+			await onGetImage!(file.path);
 		}
 
 		field.setValue(file.path); 
+
 	}
 
-	static Future<File> selectImage(ImageSource imageSource, { bool cropImage = true, double aspectRatioX = 1.0, double aspectRatioY = 1.0 }) async {
-		PickedFile originalFile = await ImagePicker().getImage(source: imageSource);
+	static Future<File?> selectImage(ImageSource imageSource, { bool cropImage = true, double aspectRatioX = 1.0, double aspectRatioY = 1.0 }) async {
+
+		XFile? originalFile = await ImagePicker().pickImage(source: imageSource);
 		if (originalFile == null) {
 			return null;
 		}
-		File file = File.fromUri(Uri(path: originalFile.path));
+		File? file = File.fromUri(Uri(path: originalFile.path));
 
 		if (cropImage) {
-			file = await ImageCropper.cropImage(
+
+			CroppedFile? croppedFile = await _imageCropper.cropImage(
 				sourcePath: file.path,
 				aspectRatio: CropAspectRatio(
 					ratioX: aspectRatioX, 
@@ -199,12 +220,16 @@ class SimpleImageField extends SimpleFormField {
 				),
 			);
 
-			if (file == null) {
+			if (croppedFile == null) {
 				return null;
 			}
+
+			file = File.fromUri(Uri(path: croppedFile.path));
+
 		}
 
 		return file;
+
 	}
 
 	_clearImage(SimpleFormFieldState field) {

@@ -2,98 +2,115 @@ import 'package:flutter/material.dart';
 import 'package:simple_form/simple_form.dart';
 
 abstract class SimpleFormField extends StatefulWidget {
-  final String fieldName;
-  final String title;
-  final bool enabled;
-  final List<SimpleValidator> validators;
-  final List<SimpleFormatter> inputFormatters;
-  final ValueChanged<dynamic> onChange;
-  final bool canSetState;
 
-  SimpleFormField({
-    Key key,
-    @required this.fieldName,
-    this.title,
-    this.enabled,
-    this.validators,
-    this.inputFormatters,
-    this.onChange,
-    @required this.canSetState
-  }) : super(key: key);
+	final String fieldName;
+	final String? title;
+	final bool enabled;
+	final List<SimpleValidator>? validators;
+	final List<SimpleFormatter>? inputFormatters;
+	final ValueChanged<dynamic>? onChange;
+	final bool canSetState;
 
-  String performValidators(BuildContext context, dynamic value) {
-    String error;
-    if (validators != null) {
-      for(int i = 0; i < validators.length; i++) {
-        error = validators[i].isValid(context, value);
-        if (error != null && error.isNotEmpty) {
-          break;
-        }
-      }
-    }
-    return (error == null || error.isEmpty ? null : error);
-  }
+	const SimpleFormField({
+		Key? key,
+		required this.fieldName,
+		this.title,
+		this.enabled = true,
+		this.validators,
+		this.inputFormatters,
+		this.onChange,
+		required this.canSetState
+	}) : super(key: key);
 
-  InputDecoration defaultTextInputDecoration(String title, {Widget sufix}) {
-    return InputDecoration(
-      labelText: title,
-      suffix: sufix
-    );
-  }
+	String? performValidators(BuildContext context, dynamic value) {
 
-  dynamic parseEditValue(dynamic newValue) {
-    return newValue;
-  }
+		String? error;
 
-  Widget build(BuildContext context, SimpleFormFieldState simpleForm);
+		if (validators != null) {
 
-  @override
-  State<StatefulWidget> createState() => SimpleFormFieldState();
+			for(int i = 0; i < validators!.length; i++) {
+
+				error = validators![i].isValid(context, value);
+				if (error != null && error.isNotEmpty) {
+					break;
+				}
+
+			}
+
+		}
+	
+		return (error == null || error.isEmpty ? null : error);
+	
+	}
+
+	InputDecoration defaultTextInputDecoration(String title, { Widget? sufix }) {
+	
+		return InputDecoration(
+			labelText: title,
+			suffix: sufix
+		);
+	
+	}
+
+	dynamic parseEditValue(dynamic newValue) {
+		return newValue;
+	}
+
+	Widget build(BuildContext context, SimpleFormFieldState simpleForm);
+
+	@override
+	State<StatefulWidget> createState() => SimpleFormFieldState();
+
 }
 
 class SimpleFormFieldState extends State<SimpleFormField> {
-  SimpleForm _simpleForm;
-  SimpleForm get simpleForm => _simpleForm;
 
-  //dynamic _value;
-  dynamic get value => _simpleForm.getInitialValue(widget.fieldName);
+	SimpleForm? _simpleForm;
+	SimpleForm get simpleForm => _simpleForm!;
 
-  @override
-  void didChangeDependencies() {
-    if (simpleForm == null) {
-      _simpleForm = context.dependOnInheritedWidgetOfExactType<SimpleForm>();
-    }
-    //_value = simpleForm.getInitialValue(widget.fieldName);
-    super.didChangeDependencies();
-  }
+	//dynamic _value;
+	dynamic get value => simpleForm.getInitialValue(widget.fieldName);
 
-  @override
-  Widget build(BuildContext context) {
-    return widget.build(context, this);
-  }
+	@override
+	void didChangeDependencies() {
 
-  void setValue(dynamic newValue, {bool canSetState, bool alwaysSet = false}) {
-    if (simpleForm.trimValues && newValue != null && newValue is String) {
-      newValue = newValue.toString().trim();
-    }
+		_simpleForm ??= context.dependOnInheritedWidgetOfExactType<SimpleForm>();
+		super.didChangeDependencies();
 
-    dynamic parsedEditValue = widget.parseEditValue(newValue);
-    
-    if (parsedEditValue != value || alwaysSet) {
-      //_value = parsedEditValue;
+	}
 
-      if ((canSetState == null && widget.canSetState) || (canSetState != null && canSetState)) {
-        setState(() {});
-      }
+	@override
+	Widget build(BuildContext context) {
+		return widget.build(context, this);
+	}
 
-      performOnChange(parsedEditValue);
-    }
-  }
+	void setValue(dynamic newValue, { bool? canSetState, bool alwaysSet = false}) {
 
-  void performOnChange(dynamic newValue) {
-    if (widget.onChange != null) {
-      widget.onChange(newValue);
-    }
-    simpleForm.performOnChange(widget.fieldName, newValue);
-  }
+		if (simpleForm.trimValues && newValue != null && newValue is String) {
+			newValue = newValue.toString().trim();
+		}
+
+		dynamic parsedEditValue = widget.parseEditValue(newValue);
+		
+		if (parsedEditValue != value || alwaysSet) {
+			//_value = parsedEditValue;
+
+			if ((canSetState == null && widget.canSetState) || (canSetState != null && canSetState)) {
+				setState(() {});
+			}
+
+			performOnChange(parsedEditValue);
+		}
+
+	}
+
+	void performOnChange(dynamic newValue) {
+
+		if (widget.onChange != null) {
+			widget.onChange!(newValue);
+		}
+		simpleForm.performOnChange(widget.fieldName, newValue);
+
+	}
+
 }

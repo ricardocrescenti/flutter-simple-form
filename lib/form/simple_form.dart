@@ -1,115 +1,129 @@
 import 'package:flutter/material.dart';
 
 class SimpleForm extends InheritedWidget {
-  final bool autovalidate;
-  final bool trimValues;
-  final Map<String, dynamic> initialValues;
-  final Function(dynamic fieldName, dynamic newValue) onChange;
 
-  SimpleForm({
-    @required GlobalKey<FormState> key,
-    this.autovalidate = false,
-    this.trimValues = true,
-    this.initialValues,
-    this.onChange,
-    @required Widget child
-  }) : super (
-    child: _createForm(key, child)
-  );
+	final bool autovalidate;
+	final bool trimValues;
+	final Map<String, dynamic>? initialValues;
+	final Function(List<String> fieldName, dynamic newValue)? onChange;
 
-  getInitialValue(String fieldName) {
-    if (initialValues == null) {
-      throw Exception('Then initialValue parameter of SimpleForm has not been initialized.');  
-    }
+	SimpleForm({
+		Key? key,
+		required GlobalKey<FormState> formStateKey,
+		this.autovalidate = false,
+		this.trimValues = true,
+		this.initialValues,
+		this.onChange,
+		required Widget child
+	}) : super (
+		key: key,
+		child: _createForm(formStateKey, child)
+	);
 
-    List<String> fieldNameList = fieldName.split('.');
-    dynamic valuesContainer = getValueContainer(fieldNameList);
+	dynamic getInitialValue(String fieldName) {
 
-    if (valuesContainer is List) {
+		if (initialValues == null) {
+			throw Exception('Then initialValue parameter of SimpleForm has not been initialized.');  
+		}
 
-      int position = int.tryParse(fieldNameList.last);
-      if (position == null) {
-        throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
-      } else if (valuesContainer.length < (position + 1)) {
-        throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
-      }
-      
-      return valuesContainer[position];
+		List<String> fieldNameList = fieldName.split('.');
+		dynamic valuesContainer = getValueContainer(fieldNameList);
 
-    }
+		if (valuesContainer is List) {
 
-    return valuesContainer[fieldNameList.last];
-  }
+			int? position = int.tryParse(fieldNameList.last);
+			if (position == null) {
+				throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
+			} else if (valuesContainer.length < (position + 1)) {
+				throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
+			}
+			
+			return valuesContainer[position];
 
-  getValueContainer(List<String> fieldNameList) {
-    dynamic valuesContainer = initialValues;
-    for (int index = 0; index < fieldNameList.length - 1; index++) {
+		}
 
-      if (valuesContainer is Map) {
+		return valuesContainer[fieldNameList.last];
 
-        if (!valuesContainer.containsKey(fieldNameList[index])) {
-          throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
-        }
-        valuesContainer = valuesContainer[fieldNameList[index]];
-      
-      } else if (valuesContainer is List) {
+	}
 
-        int position = int.tryParse(fieldNameList[index]);
-        if (position == null) {
-          throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
-        } else if (valuesContainer.length < (position + 1)) {
-          throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
-        }
-        valuesContainer = valuesContainer[position];
+	getValueContainer(List<String> fieldNameList) {
 
-      } else {
-        valuesContainer = valuesContainer[fieldNameList[index]];
-      }
+		dynamic valuesContainer = initialValues;
+		for (int index = 0; index < fieldNameList.length - 1; index++) {
 
-      if (index == fieldNameList.length - 1) {
-        break;
-      }
-      // } else {
-      //   valuesContainer = valuesContainer[fieldNameList[index]];
-      // }
-    }
-    return valuesContainer;
-  }
+			if (valuesContainer is Map) {
 
-  performOnChange(String fieldName, dynamic newValue) {
-    if (onChange != null) {
-      onChange(fieldName.split('.'), newValue);
-    }
-  }
+				if (!valuesContainer.containsKey(fieldNameList[index])) {
+					throw Exception('The field ${fieldNameList.join('.')} does not exists in SimpleForm');
+				}
+				valuesContainer = valuesContainer[fieldNameList[index]];
+			
+			} else if (valuesContainer is List) {
 
-  rows(List<Widget> rows) {
-    return Column(children: rows);
-  }
-  columns(List<Widget> fields, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
-    return Row(mainAxisAlignment: mainAxisAlignment, children: fields);
-  }
+				int? position = int.tryParse(fieldNameList[index]);
+				if (position == null) {
+					throw Exception('The position entered for field ${fieldNameList.join('.')} must be a valid number');
+				} else if (valuesContainer.length < (position + 1)) {
+					throw Exception('The position entered for the field ${fieldNameList.join('.')} must be less than the current list size');
+				}
+				valuesContainer = valuesContainer[position];
 
-  field(int columns, Widget input) {
-    return Flexible(
-      flex: columns,
-      child: Container(
-        padding: EdgeInsets.only(left: 5, right: 5, bottom: 15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[input],
-        ),
-      ),
-    );
-  }
+			} else {
+				valuesContainer = valuesContainer[fieldNameList[index]];
+			}
 
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+			if (index == fieldNameList.length - 1) {
+				break;
+			}
+			// } else {
+			//   valuesContainer = valuesContainer[fieldNameList[index]];
+			// }
+		}
 
-  static _createForm(GlobalKey<FormState> key, Widget child) {
-    return Form(
-      key: key,
-      onChanged: () => key.currentState.save(),
-      child: child
-    );
-  }
+		return valuesContainer;
+
+	}
+
+	performOnChange(String fieldName, dynamic newValue) {
+
+		if (onChange != null) {
+			onChange!(fieldName.split('.'), newValue);
+		}
+
+	}
+
+	rows(List<Widget> rows) {
+		return Column(children: rows);
+	}
+	columns(List<Widget> fields, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
+		return Row(mainAxisAlignment: mainAxisAlignment, children: fields);
+	}
+
+	field(int columns, Widget input) {
+
+		return Flexible(
+			flex: columns,
+			child: Container(
+				padding: const EdgeInsets.only(left: 5, right: 5, bottom: 15),
+				child: Column(
+					mainAxisAlignment: MainAxisAlignment.start,
+					children: <Widget>[input],
+				),
+			),
+		);
+
+	}
+
+	@override
+	bool updateShouldNotify(InheritedWidget oldWidget) => true;
+
+	static _createForm(GlobalKey<FormState> key, Widget child) {
+
+		return Form(
+			key: key,
+			onChanged: () => key.currentState?.save(),
+			child: child
+		);
+
+	}
 }
