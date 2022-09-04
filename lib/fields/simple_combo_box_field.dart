@@ -4,6 +4,7 @@ import 'package:simple_form/simple_form.dart';
 class SimpleComboBoxField<T> extends SimpleFormField {
 
 	final Map<T, String> items;
+	final String nullText;
 	final InputDecoration? inputDecoration;
 	//final TextCapitalization textCapitalization;
 	//final int maxLines;
@@ -40,6 +41,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
 		required String title,
 		required String fieldName,
 		required this.items,
+		this.nullText = '',
 		bool enabled = true,
 		List<SimpleValidator>? validators,
 		//List<SimpleFormatter> inputFormatters,
@@ -141,7 +143,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
 	}
 
 	String getDisplayText(SimpleFormFieldState field) {
-		return items[field.value] ?? 'Invalid Item';
+		return items[field.value] ?? nullText;
 	}
 
 	showDropDownItems(BuildContext context, SimpleFormFieldState field) {

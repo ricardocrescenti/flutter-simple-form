@@ -11,7 +11,7 @@ class SimpleFormLocalization extends SimpleLocalizations {
 	SimpleFormLocalization(Locale locale) : super(locale);
 
 	@override
-	Locale get defaultLocale => Locale('en');
+	Locale get defaultLocale => const Locale('en');
 
 	@override
 	Iterable<Locale> get suportedLocales => const [
