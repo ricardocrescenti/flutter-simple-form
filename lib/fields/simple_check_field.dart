@@ -20,6 +20,12 @@ class SimpleCheckField extends SimpleFormField {
 	/// If this property is null, [MaterialStateMouseCursor.clickable] will be used.
 	final MouseCursor? mouseCursor;
 
+	///
+	final dynamic checkedValue;
+
+	///
+	final dynamic uncheckedValue;
+
 	/// The color to use when this checkbox is checked.
 	///
 	/// Defaults to [ThemeData.toggleableActiveColor].
@@ -75,8 +81,10 @@ class SimpleCheckField extends SimpleFormField {
 
 	const SimpleCheckField({
 		Key? key,
-		required String fieldName,
 		required String title,
+		required String fieldName,
+		this.checkedValue = true,
+		this.uncheckedValue = false,
 		bool enabled = true,
 		List<SimpleValidator>? validators,
 		Function(dynamic newValue)? onChange,
@@ -105,8 +113,8 @@ class SimpleCheckField extends SimpleFormField {
 			children: <Widget>[
 				Checkbox(
 					key: key,
-					value: field.value,
-					onChanged: field.setValue,
+					value: (field.value == checkedValue),
+					onChanged: (value) => field.setValue((value ?? false) ? checkedValue : uncheckedValue),
 					mouseCursor: mouseCursor,
 					activeColor: activeColor,
 					checkColor: checkColor,
@@ -129,4 +137,5 @@ class SimpleCheckField extends SimpleFormField {
 			],
 		);
 	}
+
 }
