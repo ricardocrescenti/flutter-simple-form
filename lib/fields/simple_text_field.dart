@@ -93,7 +93,7 @@ class SimpleTextField extends SimpleFormField {
 	@override
 	Widget build(BuildContext context, SimpleFormFieldState field) {
 
-		InputDecoration decoration = (inputDecoration ?? defaultTextInputDecoration(title!));
+		InputDecoration decoration = (inputDecoration ?? SimpleFormField.defaultInputDecoration(title!));
 		EdgeInsets padding = this.padding ?? (decoration.border is OutlineInputBorder ? defaultOutlinePadding : EdgeInsets.zero);
 
 		return Padding(

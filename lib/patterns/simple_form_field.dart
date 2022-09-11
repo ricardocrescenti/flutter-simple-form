@@ -3,6 +3,15 @@ import 'package:simple_form/simple_form.dart';
 
 abstract class SimpleFormField extends StatefulWidget {
 
+	static InputDecoration Function(String title, { Widget? sufix }) defaultInputDecoration = (String title, { Widget? sufix }) {
+	
+		return InputDecoration(
+			labelText: title,
+			suffix: sufix,
+		);
+	
+	};
+
 	final String fieldName;
 	final String? title;
 	final bool enabled;
@@ -40,15 +49,6 @@ abstract class SimpleFormField extends StatefulWidget {
 		}
 	
 		return (error == null || error.isEmpty ? null : error);
-	
-	}
-
-	InputDecoration defaultTextInputDecoration(String title, { Widget? sufix }) {
-	
-		return InputDecoration(
-			labelText: title,
-			suffix: sufix
-		);
 	
 	}
 

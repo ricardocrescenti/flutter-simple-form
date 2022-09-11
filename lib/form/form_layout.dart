@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 class FormLayout extends StatelessWidget {
 
+	static EdgeInsets defaultPadding = const EdgeInsets.all(20);
+	static CrossAxisAlignment defaultRowCrossAxisAlignment = CrossAxisAlignment.center;
+	static MainAxisAlignment defaultColumnMainAxisAlignment = MainAxisAlignment.center;
+	static EdgeInsets defaultFieldPadding = const EdgeInsets.only(left: 5, right: 5, bottom: 15);
+
 	final EdgeInsets? padding;
 	final bool scroll;
 	final bool expanded;
@@ -9,7 +14,7 @@ class FormLayout extends StatelessWidget {
 
 	const FormLayout({
 		Key? key,
-		this.padding = const EdgeInsets.all(20),
+		this.padding,
 		this.scroll = false,
 		this.expanded = false,
 		required this.builder
@@ -17,18 +22,25 @@ class FormLayout extends StatelessWidget {
 		key: key
 	);
 
-	rows(List<Widget> rows) {
-		return Column(children: rows);
+	rows(List<Widget> rows, { CrossAxisAlignment? crossAxisAlignment }) {
+		return Column(
+			crossAxisAlignment: (crossAxisAlignment ?? defaultRowCrossAxisAlignment),
+			mainAxisSize: MainAxisSize.min,
+			children: rows,
+		);
 	}
-	columns(List<Widget> fields, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
-		return Row(mainAxisAlignment: mainAxisAlignment, children: fields);
+	columns(List<Widget> fields, { MainAxisAlignment? mainAxisAlignment }) {
+		return Row(
+			mainAxisAlignment: (mainAxisAlignment ?? defaultColumnMainAxisAlignment), 
+			children: fields
+		);
 	}
 
-	field(int columns, Widget input) {
+	field(int columns, Widget input, { EdgeInsets? padding }) {
 		return Flexible(
 			flex: columns,
 			child: Container(
-				padding: const EdgeInsets.only(left: 5, right: 5, bottom: 15),
+				padding: (padding ?? defaultFieldPadding),
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: <Widget>[input],
@@ -41,9 +53,11 @@ class FormLayout extends StatelessWidget {
 	Widget build(BuildContext context) {
 		Widget widget = builder(this);
 
-		if (padding != null && (padding!.left > 0 || padding!.top > 0 || padding!.right > 0 || padding!.bottom > 0)) {
+		EdgeInsets padding = (this.padding ?? defaultPadding);
+
+		if (padding.left > 0 || padding.top > 0 || padding.right > 0 || padding.bottom > 0) {
 			widget = Padding(
-				padding: padding!,
+				padding: padding,
 				child: widget
 			);
 		}

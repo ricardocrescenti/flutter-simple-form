@@ -83,7 +83,7 @@ class SimpleDateTimeField extends SimpleFormField {
 			key: key,
 			controller: TextEditingController(text: _getDisplayValue(field.value)),
 			focusNode: focusNode ?? _focusNode,
-			decoration: (inputDecoration ?? defaultTextInputDecoration(title!, sufix: _buildShowPickerButton(context, field))),
+			decoration: (inputDecoration ?? SimpleFormField.defaultInputDecoration(title!, sufix: _buildShowPickerButton(context, field))),
 			keyboardType: TextInputType.datetime,
 			textInputAction: TextInputAction.next,
 			style: style,

@@ -94,7 +94,7 @@ class SimpleComboBoxField<T> extends SimpleFormField {
 			key: key,
 			controller: TextEditingController(text: getDisplayText(field)),
 			focusNode: _focusNode,
-			decoration: (inputDecoration ?? defaultTextInputDecoration(title!)),
+			decoration: (inputDecoration ?? SimpleFormField.defaultInputDecoration(title!)),
 			//textCapitalization: textCapitalization,
 			textInputAction: TextInputAction.next, //(maxLines == 1 ? TextInputAction.next : TextInputAction.newline),
 			style: style,
